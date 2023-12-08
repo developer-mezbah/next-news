@@ -16,6 +16,8 @@ module.exports = {
         themeColor: "#6EEB83",
         textColor: "#fff",
         bodyColor: "#272727",
+        dark: "#000",
+        themeGray: "#DBE0EA"
       }
     },
   },

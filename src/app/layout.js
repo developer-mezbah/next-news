@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <body>
         <Navbar/>
         
-        <div className='lg:ml-[10%] ml-0 pb-[120px] lg:pb-0'>{children}</div>
+        <div className='lg:ml-[15%] ml-0 pb-[120px] lg:pb-0'>{children}</div>
         
         
         </body>

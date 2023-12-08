@@ -14,7 +14,7 @@ body {
 h1 {
   @apply text-textColor;
   font-family: Lexend Deca;
-  font-size: 32px;
+  font-size: 40px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
@@ -30,7 +30,7 @@ h2 {
 h3 {
   @apply text-textColor;
   font-family: Lexend Deca;
-  font-size: 20px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -90,5 +90,13 @@ input, textarea{
 @media only screen and (max-width: 640px) {
   .svg, .login-svg{
     height: 20px;
+  }
+  h2 {
+    @apply text-themeColor;
+    font-family: DM Serif Display;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 } 
