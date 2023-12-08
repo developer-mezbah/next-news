@@ -1,3 +1,94 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Orbitron:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&family=Orbitron:wght@400;700&display=swap");
+
+/* font-family: 'DM Serif Display', serif;
+font-family: 'Lexend Deca', sans-serif; */
+
+body {
+  @apply bg-bodyColor;
+}
+h1 {
+  @apply text-textColor;
+  font-family: Lexend Deca;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+h2 {
+  @apply text-themeColor;
+  font-family: DM Serif Display;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+h3 {
+  @apply text-textColor;
+  font-family: Lexend Deca;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+span {
+  @apply text-textColor;
+  font-family: Lexend Deca;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+p {
+  @apply text-textColor;
+  font-family: Lexend Deca;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.readMore {
+  @apply text-themeColor;
+  font-family: Lexend Deca;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+}
+.category-btn{
+  @apply text-themeColor;
+  font-family: Lexend Deca;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.svg{
+  @apply fill-themeColor;
+  /* fill: red; */
+}
+.login-svg{
+  height: 40px;
+  width: 50px;
+}
+input, textarea{
+  @apply border-2 border-themeColor outline-none;
+}
+.btn{
+  @apply bg-themeColor text-textColor;
+}
+/* Responsive */
+/* @media only screen and (max-width: 1024px) {
+}
+@media only screen and (max-width: 768px) {
+}*/
+@media only screen and (max-width: 640px) {
+  .svg, .login-svg{
+    height: 20px;
+  }
+} 
