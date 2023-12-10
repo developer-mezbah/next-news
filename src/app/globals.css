@@ -88,6 +88,42 @@ button{
   font-weight: 400;
   line-height: normal;
 }
+.link-delete:last-of-type{
+  border: 0;
+}
+
+
+
+/*Custom scroll bar*/
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #22c55e43;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  /* background: #22c55e; */
+  @apply bg-themeColor;
+  transition: 0.5s;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #22c55e;
+}
+
+
+
+
+
+
+
 /* Responsive */
 /* @media only screen and (max-width: 1024px) {
 }

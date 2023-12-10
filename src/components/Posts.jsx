@@ -87,7 +87,7 @@ const Posts = () => {
 
       {postsData &&
         postsData.map((post) => (
-          <div key={post.id} className="post-item mt-5">
+          <div key={post.id} className="post-item mt-10">
             <div className="flex md:flex-row-reverse gap-3">
               <div className="">
                 <div className="lg:w-[80%]">
@@ -101,19 +101,19 @@ const Posts = () => {
                       <br /> <small className="text-right block">author</small>
                     </p>
                   </div>
-                  <div className="flex flex-col md:flex-row justify-between items-center my-2 text-center">
+                  <div className="flex flex-col md:flex-row justify-center items-center my-2">
                     <Image
                       src={post.thumbnail}
                       width={500}
                       height={500}
                       alt="My logo"
-                      className="w-full object-cover rounded-lg"
+                      className="w-full object-cover rounded-lg lg:h-[300px]"
                     />
-                    <div className="overflow-hidden flex md:rotate-90 my-3 px-4">
-                      <button className="bg-green-500 px-3 py-2 active:scale-110 hover:scale-110 rounded-tl-lg rounded-bl-lg">
+                    <div className=" flex md:rotate-90 my-3 px-4 lg:m-auto">
+                      <button className="bg-green-500 px-3 py-2 active:scale-110 hover:scale-110 rounded-tl-lg rounded-bl-lg text-textColor">
                         Edit
                       </button>
-                      <button className="bg-red-500 px-3 py-2 active:scale-110 hover:scale-110 rounded-br-lg rounded-tr-lg">
+                      <button className="bg-red-500 px-3 py-2 active:scale-110 hover:scale-110 rounded-br-lg rounded-tr-lg text-textColor">
                         Delete
                       </button>
                     </div>

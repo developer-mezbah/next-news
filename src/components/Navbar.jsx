@@ -1,18 +1,23 @@
+"use client";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
+  const { status } = useSession();
   return (
     <div className="bg-bodyColor lg:w-[10%] w-[100%] fixed lg:left-0 bottom-0 lg:border-r-2 border-themeColor lg:h-screen h-[90px]">
       <nav className="flex lg:flex-col lg:w-full h-full text-center md:space-y-5 justify-between lg:justify-around items-center md:w-[80%] m-auto border-2 border-themeColor p-2 lg:border-0 rounded-md">
         <div className="logo">
-          <Image
-            src="/logo.png"
-            width={500}
-            height={500}
-            alt="Created by Mezbah Uddin"
-            className="md:w-[200px] md:h-[80px] w-[150px] md:pr-0 pr-4"
-          />
+          <Link href={"/"}>
+            <Image
+              src="/logo.png"
+              width={500}
+              height={500}
+              alt="Created by Mezbah Uddin"
+              className="md:w-[200px] md:h-[80px] w-[150px] md:pr-0 pr-4"
+            />
+          </Link>
         </div>
         <ul className="lg:space-y-10 flex lg:flex-col md:gap-10 gap-5">
           <li>
@@ -105,8 +110,8 @@ const Navbar = () => {
               <span>Create</span>
             </Link>
           </li>
-          <li>
-            <Link href="/sign-in">
+          {status === "authenticated" ? (
+            <li onClick={() => signOut()}>
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -123,9 +128,31 @@ const Navbar = () => {
                   />
                 </svg>
               </span>
-              <span className="text-themeColor">Sign In</span>
-            </Link>
-          </li>
+              <span className="text-themeColor">Sign Out</span>
+            </li>
+          ) : (
+            <li>
+              <Link href="/sign-in">
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-[20px] login-svg m-auto"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                    />
+                  </svg>
+                </span>
+                <span className="text-themeColor">Sign In</span>
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>
