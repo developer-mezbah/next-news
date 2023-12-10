@@ -17,7 +17,8 @@ module.exports = {
         textColor: "#fff",
         bodyColor: "#272727",
         dark: "#000",
-        themeGray: "#DBE0EA"
+        themeGray: "#80808094",
+        warning: "#EF4444"
       }
     },
   },

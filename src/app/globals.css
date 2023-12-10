@@ -59,7 +59,7 @@ p {
   font-weight: 200;
   line-height: normal;
 }
-.category-btn{
+.categoryBtn{
   @apply text-themeColor;
   font-family: Lexend Deca;
   font-size: 13px;
@@ -81,6 +81,12 @@ input, textarea{
 }
 .btn{
   @apply bg-themeColor text-textColor;
+}
+button{
+  font-family: DM Serif Display;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 /* Responsive */
 /* @media only screen and (max-width: 1024px) {

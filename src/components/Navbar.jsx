@@ -4,7 +4,7 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <div className="bg-bodyColor lg:w-[10%] w-[100%] fixed lg:left-0 bottom-0 lg:border-r-2 border-themeColor lg:h-screen h-[90px]">
-      <nav className="flex lg:flex-col lg:w-full h-full text-center space-y-5 justify-between lg:justify-around items-center md:w-[80%] m-auto border-2 border-themeColor p-2 lg:border-0 rounded-md">
+      <nav className="flex lg:flex-col lg:w-full h-full text-center md:space-y-5 justify-between lg:justify-around items-center md:w-[80%] m-auto border-2 border-themeColor p-2 lg:border-0 rounded-md">
         <div className="logo">
           <Image
             src="/logo.png"
@@ -76,7 +76,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="#">
+            <Link href="create-post">
               <span className="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="#">
+            <Link href="/sign-in">
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
