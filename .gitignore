@@ -7,7 +7,7 @@
 .yarn/install-state.gz
 
 # note
-/note.txt
+note.txt
 
 # testing
 /coverage
@@ -30,7 +30,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
+.env
 # vercel
 .vercel
 
