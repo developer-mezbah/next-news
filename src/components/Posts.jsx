@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 
 const Posts = () => {
+  // console.log(postsData);
   return (
     <div className="mt-5">
       {/* <div className="post-item mt-5">
