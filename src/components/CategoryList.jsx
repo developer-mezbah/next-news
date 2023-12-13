@@ -1,4 +1,3 @@
-// import { categoriesData } from "@/utils/postsData"
 import Link from "next/link";
 
 const getCategories = async () => {

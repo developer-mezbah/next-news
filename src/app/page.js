@@ -1,7 +1,5 @@
 import CategoryList from "@/components/CategoryList";
 import Posts from "@/components/Posts";
-import { postsData } from "@/utils/postsData";
-// import { postsData } from "@/utils/postsData";
 
 const getPosts = async () => {
   try {
@@ -31,6 +29,7 @@ const Home = async () => {
         postsData.map((post) => (
           <Posts
             key={post.id}
+            id={post.id}
             title={post.title}
             content={post.content}
             author={post.authorEmail}

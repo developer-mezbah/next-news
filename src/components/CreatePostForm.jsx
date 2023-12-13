@@ -1,5 +1,4 @@
 "use client";
-// import { categoriesData } from "@/utils/postsData";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
