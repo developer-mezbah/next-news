@@ -2,19 +2,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Posts from "@/components/Posts";
-// import { postsData } from '@/utils/postsData'
-
-// const getPosts = async () => {
-//   try {
-//     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts/`, {cache: "no-store"});
-//     if (res.ok) {
-//       const posts = res.json();
-//       return posts;
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const getPosts = async (email) => {
   try {
@@ -34,7 +21,6 @@ const page = async () => {
     redirect("/sign-in");
   }
 
-  // const postsData = await getPosts();
   let posts = [];
   if (email) {
     posts = await getPosts(email);
