@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CldUploadButton } from "next-cloudinary";
 import Image from "next/image";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreatePostForm = () => {
   const router = useRouter();
+
+  const [uploadLoading, setUploadLoading] = useState(false)
 
   const [links, setLinks] = useState([]);
   const [linkInput, setLinkInput] = useState("");
@@ -87,6 +89,7 @@ const CreatePostForm = () => {
   // Remove fuctionality for coudinary
   const removeImage = async (e) => {
     e.preventDefault();
+    setUploadLoading(true)
     try {
       const res = await fetch("/api/removeImage", {
         method: "POST",
@@ -97,6 +100,7 @@ const CreatePostForm = () => {
       if (res.ok) {
         setImageUrl("");
         setPublicId("");
+        setUploadLoading(false)
       }
     } catch (error) {
       console.log(error);
@@ -208,6 +212,9 @@ const CreatePostForm = () => {
             }`}
             onUpload={handleImageUpload}
           >
+            {uploadLoading && <div className="z-10 absolute bg-white inset-0 flex items-center justify-center rounded-xl">
+              <div className="loader w-16 h-16 border-t-4 border-themeColor border-solid rounded-full animate-spin"></div>
+            </div>}
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -229,7 +236,7 @@ const CreatePostForm = () => {
                 src={imageUrl}
                 fill
                 alt={title || "Upload Images"}
-                className="absolute object-cover inset-0 rounded-xl"
+                className="absolute object-cover inset-0 rounded-xl z-0"
               />
             )}
           </CldUploadButton>
@@ -262,7 +269,7 @@ const CreatePostForm = () => {
           {error && <div className="p-2 text-warning font-bold">{error}</div>}
         </form>
       </div>
-      
+
       <ToastContainer />
     </>
   );
