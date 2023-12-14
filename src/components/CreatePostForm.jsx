@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 const CreatePostForm = () => {
   const router = useRouter();
 
-  const [uploadLoading, setUploadLoading] = useState(false)
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const [links, setLinks] = useState([]);
   const [linkInput, setLinkInput] = useState("");
@@ -89,7 +89,7 @@ const CreatePostForm = () => {
   // Remove fuctionality for coudinary
   const removeImage = async (e) => {
     e.preventDefault();
-    setUploadLoading(true)
+    setUploadLoading(true);
     try {
       const res = await fetch("/api/removeImage", {
         method: "POST",
@@ -100,7 +100,7 @@ const CreatePostForm = () => {
       if (res.ok) {
         setImageUrl("");
         setPublicId("");
-        setUploadLoading(false)
+        setUploadLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -212,9 +212,11 @@ const CreatePostForm = () => {
             }`}
             onUpload={handleImageUpload}
           >
-            {uploadLoading && <div className="z-10 absolute bg-white inset-0 flex items-center justify-center rounded-xl">
-              <div className="loader w-16 h-16 border-t-4 border-themeColor border-solid rounded-full animate-spin"></div>
-            </div>}
+            {uploadLoading && (
+              <div className="z-10 absolute bg-white inset-0 flex items-center justify-center rounded-xl">
+                <div className="loader w-16 h-16 border-t-4 border-themeColor border-solid rounded-full animate-spin"></div>
+              </div>
+            )}
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -266,6 +268,15 @@ const CreatePostForm = () => {
           >
             Create Post
           </button>
+          <div className="text-textColor font-light text-xl">
+            <span className="text-yellow-500 text-xl">Remember:-</span>{" "}
+            <i>
+              {" "}
+              If you want to add a link, then add a Facebook, LinkedIn, Github,
+              or Twitter link. If you do not add those links, then the link will
+              not show up in the post.
+            </i>
+          </div>
           {error && <div className="p-2 text-warning font-bold">{error}</div>}
         </form>
       </div>

@@ -73,3 +73,24 @@ export const categoriesData = [
         name: "BNP"
     },
 ]
+
+
+export const socials = [
+    {
+        id: "1",
+        socialIcon: "CiLinkedin",
+        link: "facebook.com"
+    },{
+        id: "2",
+        socialIcon: "CiTwitter",
+        link: "facebook.com"
+    },{
+        id: "3",
+        socialIcon: "CiFacebook",
+        link: "facebook.com"
+    },{
+        id: "4",
+        socialIcon: "FiGithub",
+        link: "facebook.com"
+    },
+]

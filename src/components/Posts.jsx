@@ -1,3 +1,6 @@
+import { CiLinkedin, CiTwitter, CiFacebook } from "react-icons/ci";
+import { FiGithub } from "react-icons/fi";
+import { FaShareSquare } from "react-icons/fa";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
@@ -5,6 +8,26 @@ import Link from "next/link";
 import React from "react";
 import DeleteBtn from "./DeleteBtn";
 import EditBtn from "./EditBtn";
+// import { socials } from "@/utils/postsData";
+
+const socials = [
+  {
+    name: "twitter",
+    icon: <CiTwitter />,
+  },
+  {
+    name: "facebook",
+    icon: <CiFacebook />,
+  },
+  {
+    name: "linkedin",
+    icon: <CiLinkedin />,
+  },
+  {
+    name: "github",
+    icon: <FiGithub />,
+  },
+];
 
 const Posts = async ({
   title,
@@ -14,9 +37,8 @@ const Posts = async ({
   category,
   links,
   thumbnail,
-  id
+  id,
 }) => {
-  
   const session = await getServerSession(authOptions);
 
   const isEditable = session && session?.user?.email === author;
@@ -33,6 +55,15 @@ const Posts = async ({
   const sideDateFormattor = sideDate[1].split(",")[0];
   return (
     <div className="overflow-hidden mt-5">
+      {/* {
+        socials.map((icon, i)=> {
+          const link = links.includes(icon.name)
+          console.log(icon.name);
+          return(
+            <span key={i}>{icon.icon}</span>
+          )
+        })
+      } */}
       {/* <div className="post-item mt-5">
         <div className="flex md:flex-row-reverse gap-3">
           <div className="">
@@ -138,8 +169,8 @@ const Posts = async ({
                 }
                 {isEditable && (
                   <div className="flex md:rotate-90 my-3 px-4 lg:m-auto">
-                    <EditBtn id={id}/>
-                    <DeleteBtn id={id}/>
+                    <EditBtn id={id} />
+                    <DeleteBtn id={id} />
                   </div>
                 )}
               </div>
@@ -160,15 +191,22 @@ const Posts = async ({
                 )}
                 <div className="flex gap-3 flex-wrap">
                   {links &&
-                    links.map((link, i) => (
-                      <Link
-                        key={i}
-                        href={link}
-                        className="text-themeGray font-bold"
-                      >
-                        {link}
-                      </Link>
-                    ))}
+                    links.map((link, i) => {
+                      return (
+                        <>
+                          <Link
+                            key={i}
+                            href={link}
+                            className="text-themeGray font-bold"
+                          >
+                            {/* {link} */}
+                            {socials.map((social, i) => (
+                              <div className="text-4xl cursor-pointer text-themeColor" key={i}>{link.includes(social.name) && social.icon}</div>
+                            ))}
+                          </Link>
+                        </>
+                      );
+                    })}
                 </div>
               </div>
             </div>

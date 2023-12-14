@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CldUploadButton } from "next-cloudinary";
 import Image from "next/image";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditPostForm = ({ post }) => {
   const router = useRouter();
+
 
   const [links, setLinks] = useState([]);
   const [linkInput, setLinkInput] = useState("");
@@ -38,7 +39,6 @@ const EditPostForm = ({ post }) => {
       setSelectedCategory(post.catName || "");
       setLinks(post.links || []);
     };
-    console.log(post.catName);
     initValues();
   }, [
     post.title,
@@ -47,6 +47,7 @@ const EditPostForm = ({ post }) => {
     post.publicId,
     post.catName,
     post.links,
+    imageUrl,
   ]);
 
   // link add fucntions
@@ -80,20 +81,20 @@ const EditPostForm = ({ post }) => {
           links,
           selectedCategory,
           imageUrl,
-          publicId
+          publicId,
         }),
       });
 
       if (res.ok) {
-        toast.success("Your post edit successfully.")
+        toast.success("Your post edit successfully.");
         router.push("/dashboard");
-        router.refresh()
-      }else{
-        toast.error("Something went wrong.")
+        router.refresh();
+      } else {
+        toast.error("Something went wrong.");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error)
+      toast.error(error);
     }
   };
 
@@ -126,7 +127,7 @@ const EditPostForm = ({ post }) => {
   };
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <h1 className="lg:text-left text-center">Edit This Post</h1>
       <form
         onSubmit={handleSubmit}
@@ -232,7 +233,7 @@ const EditPostForm = ({ post }) => {
           }`}
           onUpload={handleImageUpload}
         >
-          <div>
+          <div className="z-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -253,9 +254,11 @@ const EditPostForm = ({ post }) => {
               src={imageUrl}
               fill
               alt={title || "Upload Images"}
-              className="absolute object-cover inset-0 rounded-xl"
+              className="absolute object-cover inset-0 rounded-xl z-0"
             />
           )}
+          
+          
         </CldUploadButton>
         {publicId && (
           <button
