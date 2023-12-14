@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { NextAuthProvider } from "@/components/Provider";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
       <body>
         <NextAuthProvider>
           <Navbar />
+      <NextTopLoader color="#269669" height={3} speed={200} />
           <div className="lg:ml-[15%] ml-0 pb-[120px] lg:pb-0 lg:pt-16 md:mt-10 mt-5 px-3">
             {children}
           </div>
