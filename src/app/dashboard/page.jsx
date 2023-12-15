@@ -3,6 +3,14 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Posts from "@/components/Posts";
 
+
+
+export const metadata = {
+  title: 'Dashboard || Posts',
+  description: 'Welcome to Coder Value city, your go-to destination for breaking news, insightful articles, and up-to-the-minute updates. This news portal project is designed to deliver a seamless and personalized news browsing experience for users of all interests.',
+}
+ 
+
 const getPosts = async (email) => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/authors/${email}`);

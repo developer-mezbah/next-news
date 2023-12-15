@@ -1,6 +1,28 @@
 import CategoryList from "@/components/CategoryList";
 import Posts from "@/components/Posts";
+export async function generateMetaData() {
+  const res = await fetch(process.env.NEXTAUTH_URL + "/api/posts");
+  if (!res.ok) {
+    throw new Error("Site meta data fething failed!!!!");
+  }
+  const data = await res.json();
+  const { title, description, thumbnail } = data[0];
 
+  return {
+    title: "posts",
+    description: description,
+    openGraph: {
+      images: thumbnail,
+    },
+    alternates: {
+      canonical: "/",
+      languages: {
+        "en-US": "/en-US",
+        "de-DE": "/de-DE",
+      },
+    },
+  };
+}
 const getPosts = async () => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts/`, {

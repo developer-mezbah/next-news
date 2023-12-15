@@ -29,6 +29,8 @@ const socials = [
   },
 ];
 
+
+
 const Posts = async ({
   title,
   content,
