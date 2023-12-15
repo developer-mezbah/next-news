@@ -11,6 +11,7 @@ export async function generateMetadata() {
   return {
     title: "News project in NEXT.JS",
     description: "I am a highly motivated and detail-oriented software engineer with a passion for creating efficient, scalable, and maintainable software solutions. With 2 years of experience in the field, I have a proven track record of delivering high-quality code within challenging deadlines. My expertise lies in MERN Stack and NEXT.JS, and I am well-versed in the entire software development life cycle. I excel in problem-solving and thrive in dynamic and collaborative team environments.",
+    keywords: "mezbah's projects, developer mezbah, developer mezbah projects, project of mezbah, project of developer mezbah, frelancer mezbah, bangladeshi freelancer, web developer, developer, web programmer, full stack web developer mezbah uddin, mezbah uddin, project of bangladesh, next js project, news nextjs project, demo next js project, demo project of developer mezbah uddin",
     openGraph: {
       images: "https://raw.githubusercontent.com/developer-mezbah/next-news/main/public/preview.png?token=GHSAT0AAAAAACHT5MOOZ4XIOKBHSUQQFNTGZL4NDCA",
     },
