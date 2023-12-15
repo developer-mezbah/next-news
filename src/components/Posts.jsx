@@ -146,7 +146,7 @@ const Posts = async ({
       <div className="post-item mt-10">
         <div className="flex md:flex-row-reverse gap-3">
           <div className="w-full">
-            <div className="lg:w-[80%]">
+            <div className="lg:w-[80%] space-y-7">
               <h2 className="title">{title}</h2>
               <div className="md:hidden flex flex-wrap justify-between items-center my-3 px-2 gap-2">
                 <p className=" text-themeColor font-bold bg-themeGray py-1 px-2 rounded-md">
@@ -154,7 +154,7 @@ const Posts = async ({
                 </p>
                 <p className=" text-themeColor font-bold bg-themeGray py-1 px-2 rounded-md">
                   {author}
-                  <br /> <small className="text-right block">author</small>
+                  <br /> <small className="sm:text-right block">author</small>
                 </p>
               </div>
               <div className="flex flex-col md:flex-row justify-center items-center my-2">
@@ -175,10 +175,17 @@ const Posts = async ({
                 )}
               </div>
               <p>
-                {content}
-                <button className="text-themeColor hover:underline font-bold hover:scale-110">
-                  <Link href={"#"}>...ReadMore</Link>
-                </button>
+                {/* truncate text */}
+                {content.length > 400 ? (
+                  <>
+                    {content.slice(0, 400)}
+                    <button className="text-themeColor hover:underline font-bold hover:scale-110">
+                      <Link href={"#"}>...ReadMore</Link>
+                    </button>
+                  </>
+                ) : (
+                  content
+                )}
               </p>
 
               <div className="flex flex-wrap gap-3 text-textColor mt-4 justify-between pr-3 lg:pr-0">
@@ -201,7 +208,12 @@ const Posts = async ({
                           >
                             {/* {link} */}
                             {socials.map((social, i) => (
-                              <div className="text-4xl cursor-pointer text-themeColor" key={i}>{link.includes(social.name) && social.icon}</div>
+                              <div
+                                className="text-4xl cursor-pointer text-themeColor"
+                                key={i}
+                              >
+                                {link.includes(social.name) && social.icon}
+                              </div>
                             ))}
                           </Link>
                         </>

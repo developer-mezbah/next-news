@@ -37,7 +37,7 @@ const Navbar = () => {
               width={500}
               height={500}
               alt="Created by Mezbah Uddin"
-              className="md:w-[200px] md:h-[80px] w-[150px] md:pr-0 pr-4"
+              className="md:w-[200px] md:h-[70px] lg:h-[50px] xl:h-[70px] w-[150px] md:pr-0 pr-4 h-[50px]"
             />
           </Link>
         </div>
