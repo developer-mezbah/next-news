@@ -48,8 +48,8 @@ const Navbar = () => {
   return (
     <>
       {searchModel && (
-        <div className=" searchModel bg-trasnparent h-screen w-screen fixed top-0 z-50 grid place-items-center">
-          <div className="bg-slate-900 text-white h-[500px] w-[400px] p-5 rounded-md relative">
+        <div className="searchModel bg-trasnparent h-screen w-screen fixed top-0 z-50 grid place-items-center">
+          <div className="bg-slate-900 text-white md:h-[500px] md:w-[400px] w-[90%] h-[60%] p-5 rounded-md relative">
             <span
               onClick={() => {
                 setSearchModel(!searchModel);
@@ -111,7 +111,7 @@ const Navbar = () => {
               />
             </Link>
           </div>
-          <ul className="lg:space-y-10 flex lg:flex-col md:gap-10 gap-5 relative">
+          <ul className="lg:space-y-10 flex lg:flex-col md:gap-10 gap-5 items-center relative">
             <li
               onClick={() => setSearchModel(!searchModel)}
               className="cursor-pointer"
@@ -201,7 +201,7 @@ const Navbar = () => {
                     </g>
                   </svg>
                 </span>
-                <span>Create Post</span>
+                <span>Create</span>
               </Link>
             </li>
             {status === "authenticated" ? (
