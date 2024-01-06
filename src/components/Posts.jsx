@@ -182,7 +182,7 @@ const Posts = async ({
                   <>
                     {content.slice(0, 400)}
                     <button className="text-themeColor hover:underline font-bold hover:scale-110">
-                      <Link href={"#"}>...ReadMore</Link>
+                      <Link href={`/post-details/${id}`}>...ReadMore</Link>
                     </button>
                   </>
                 ) : (

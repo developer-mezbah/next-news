@@ -8,7 +8,9 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 export async function GET(req, {params}){
     try {
         const id = params.id;
+        console.log(typeof(id));
         const post = await prisma.post.findUnique({where: {id}});
+        console.log(post);
         return NextResponse.json(post)
     } catch (error) {
         console.log(error);

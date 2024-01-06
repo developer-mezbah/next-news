@@ -3,47 +3,115 @@ import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { CiSearch } from "react-icons/ci";
+import { useDebouncedCallback } from "use-debounce";
 
 const Navbar = () => {
   const { status, data } = useSession();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  
+  const [searchModel, setSearchModel] = useState(false);
+  const [searchData, setSearchData] = useState([]);
+
   // DropDown hidden when click outside
-  const popupRef = useRef(null)
+  const popupRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if(popupRef.current && !popupRef.current.contains(e.target)){
-        setIsPopupVisible(false)
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        setIsPopupVisible(false);
       }
     };
-    document.addEventListener("click", handleClickOutside)
+    document.addEventListener("click", handleClickOutside);
 
-    if(!isPopupVisible){
-      document.removeEventListener("click", handleClickOutside)
+    if (!isPopupVisible) {
+      document.removeEventListener("click", handleClickOutside);
     }
     return () => {
-      document.removeEventListener("click", handleClickOutside)
-    }
-  },[isPopupVisible])
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isPopupVisible]);
   // ref={popupRef} use in current DropDown div
   // Dropdown program End
+
+  const handleSearch = useDebouncedCallback((e) => {
+    fetch("/api/search/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(e.target.value), // Convert the data to JSON format
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchData(data);
+      });
+  }, 300);
   return (
-    <div className="bg-bodyColor lg:w-[10%] w-[100%] fixed lg:left-0 bottom-0 lg:border-r-2 border-themeColor lg:h-screen h-[90px] z-50">
-      <nav className="flex lg:flex-col lg:w-full h-full text-center md:space-y-5 justify-between lg:justify-around items-center md:w-[80%] m-auto border-2 border-themeColor p-2 lg:border-0 rounded-md">
-        <div className="logo">
-          <Link href={"/"}>
-            <Image
-              src="/logo.png"
-              width={500}
-              height={500}
-              alt="Created by Mezbah Uddin"
-              className="md:w-[200px] md:h-[70px] lg:h-[50px] xl:h-[70px] w-[150px] md:pr-0 pr-4 h-[50px]"
-            />
-          </Link>
+    <>
+      {searchModel && (
+        <div className=" searchModel bg-trasnparent h-screen w-screen fixed top-0 z-50 grid place-items-center">
+          <div className="bg-slate-900 text-white h-[500px] w-[400px] p-5 rounded-md relative">
+            <span
+              onClick={() => setSearchModel(!searchModel)}
+              className="text-red-500 text-4xl absolute rotate-45 top-[5px] left-[12px] cursor-pointer"
+            >
+              +
+            </span>
+            <div className="mt-10">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  className=" bg-white p-3 text-slate-900 border-themeColor rounded-lg outline-none w-4/5"
+                  placeholder="Search..."
+                  onChange={handleSearch}
+                />
+                <button className="text-4xl text-center w-1/7 text-themeColor border-themeColor border-2 p-1 rounded-lg cursor-pointer">
+                  <CiSearch />
+                </button>
+              </div>
+            </div>
+            <div>
+              <ul className="mt-5 overflow-hidden ">
+                {searchData &&
+                  searchData.map((data) => (
+                    <li
+                      key={data.id}
+                      className="mt-2"
+                      onClick={() => {
+                        setSearchModel(!searchModel);
+                        setSearchData([]);
+                      }}
+                    >
+                      <Link
+                        href={`/post-details/${data.id}`}
+                        className="underline text-xl hover:text-themeColor"
+                      >
+                        {data.title}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
         </div>
-        <ul className="lg:space-y-10 flex lg:flex-col md:gap-10 gap-5 relative">
-          <li>
-            <Link href="#">
+      )}
+      <div className="bg-bodyColor lg:w-[10%] w-[100%] fixed lg:left-0 bottom-0 lg:border-r-2 border-themeColor lg:h-screen h-[90px] z-50">
+        <nav className="flex lg:flex-col lg:w-full h-full text-center md:space-y-5 justify-between lg:justify-around items-center md:w-[80%] m-auto border-2 border-themeColor p-2 lg:border-0 rounded-md">
+          <div className="logo">
+            <Link href={"/"}>
+              <Image
+                src="/logo.png"
+                width={500}
+                height={500}
+                alt="Created by Mezbah Uddin"
+                className="md:w-[200px] md:h-[70px] lg:h-[50px] xl:h-[70px] w-[150px] md:pr-0 pr-4 h-[50px]"
+              />
+            </Link>
+          </div>
+          <ul className="lg:space-y-10 flex lg:flex-col md:gap-10 gap-5 relative">
+            <li
+              onClick={() => setSearchModel(!searchModel)}
+              className="cursor-pointer"
+            >
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -70,9 +138,9 @@ const Navbar = () => {
                 </svg>
               </span>
               <span>Search</span>
-            </Link>
-          </li>
-          <li>
+            </li>
+            {/* 
+            <li>
             <Link href="#">
               <span>
                 <svg
@@ -101,109 +169,135 @@ const Navbar = () => {
               </span>
               <span>Trending</span>
             </Link>
-          </li>
-          <li className="sm:block hidden">
-            <Link href="create-post">
-              <span className="">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={40}
-                  height={40}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  className="svg m-auto"
-                >
-                  <mask
-                    id="mask0_2_120"
-                    style={{ maskType: "alpha" }}
-                    maskUnits="userSpaceOnUse"
-                    x={0}
-                    y={0}
+          </li> */}
+            <li className="">
+              <Link href="create-post">
+                <span className="">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
                     width={40}
                     height={40}
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    className="svg m-auto"
                   >
-                    <rect width={40} height={40} fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_2_120)">
-                    <path d="M20.083 28.333C20.4723 28.333 20.7987 28.2013 21.062 27.938C21.326 27.674 21.458 27.3473 21.458 26.958V21.5H27C27.3613 21.5 27.674 21.368 27.938 21.104C28.2013 20.84 28.333 20.5137 28.333 20.125C28.333 19.7083 28.2013 19.368 27.938 19.104C27.674 18.84 27.3473 18.708 26.958 18.708H21.458V13C21.458 12.6387 21.326 12.3263 21.062 12.063C20.7987 11.799 20.4723 11.667 20.083 11.667C19.6943 11.667 19.368 11.799 19.104 12.063C18.84 12.3263 18.708 12.6527 18.708 13.042V18.708H13C12.6387 18.708 12.326 18.847 12.062 19.125C11.7987 19.403 11.667 19.7363 11.667 20.125C11.667 20.5137 11.7987 20.84 12.062 21.104C12.326 21.368 12.6527 21.5 13.042 21.5H18.708V27C18.708 27.3613 18.84 27.674 19.104 27.938C19.368 28.2013 19.6943 28.333 20.083 28.333ZM20 36.667C17.6667 36.667 15.486 36.2363 13.458 35.375C11.4307 34.5137 9.66701 33.333 8.16701 31.833C6.66701 30.333 5.48634 28.5693 4.62501 26.542C3.76367 24.514 3.33301 22.3333 3.33301 20C3.33301 17.6667 3.76367 15.486 4.62501 13.458C5.48634 11.4307 6.66701 9.66699 8.16701 8.16699C9.66701 6.66699 11.4307 5.48633 13.458 4.62499C15.486 3.76366 17.6667 3.33299 20 3.33299C22.3333 3.33299 24.514 3.76366 26.542 4.62499C28.5693 5.48633 30.333 6.66699 31.833 8.16699C33.333 9.66699 34.5137 11.4307 35.375 13.458C36.2363 15.486 36.667 17.6667 36.667 20C36.667 22.3333 36.2363 24.514 35.375 26.542C34.5137 28.5693 33.333 30.333 31.833 31.833C30.333 33.333 28.5693 34.5137 26.542 35.375C24.514 36.2363 22.3333 36.667 20 36.667ZM20 33.875C23.8333 33.875 27.104 32.5207 29.812 29.812C32.5207 27.104 33.875 23.8333 33.875 20C33.875 16.1667 32.5207 12.896 29.812 10.188C27.104 7.47933 23.8333 6.12499 20 6.12499C16.1667 6.12499 12.896 7.47933 10.188 10.188C7.47934 12.896 6.12501 16.1667 6.12501 20C6.12501 23.8333 7.47934 27.104 10.188 29.812C12.896 32.5207 16.1667 33.875 20 33.875Z" />
-                  </g>
-                </svg>
-              </span>
-              <span>Create</span>
-            </Link>
-          </li>
-          {status === "authenticated" ? (
-            <li ref={popupRef}>
-              <div
-                className="lg:w-[80px] lg:h-[80px] w-[60px]"
-                onClick={() => setIsPopupVisible(!isPopupVisible)}
-              >
-                <Image
-                  src={data?.user?.image || ""}
-                  width={100}
-                  height={100}
-                  alt="Profile image"
-                  className="rounded-full cursor-pointer object-cover"
-                />
-              </div>
-              <ul
-                className={`dropdown absolute lg:bottom-0 bottom-[100px] w-[200px overflow-hidden] bg-dark space-y-3 p-3 rounded-lg lg:ml-[100px] ${
-                  !isPopupVisible && "hidden"
-                }`}
-              >
-                <li onClick={() => setIsPopupVisible(!isPopupVisible)} className="cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={40}
-                  height={40}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  className="fill-red-500 rotate-45 m-auto"
+                    <mask
+                      id="mask0_2_120"
+                      style={{ maskType: "alpha" }}
+                      maskUnits="userSpaceOnUse"
+                      x={0}
+                      y={0}
+                      width={40}
+                      height={40}
+                    >
+                      <rect width={40} height={40} fill="#D9D9D9" />
+                    </mask>
+                    <g mask="url(#mask0_2_120)">
+                      <path d="M20.083 28.333C20.4723 28.333 20.7987 28.2013 21.062 27.938C21.326 27.674 21.458 27.3473 21.458 26.958V21.5H27C27.3613 21.5 27.674 21.368 27.938 21.104C28.2013 20.84 28.333 20.5137 28.333 20.125C28.333 19.7083 28.2013 19.368 27.938 19.104C27.674 18.84 27.3473 18.708 26.958 18.708H21.458V13C21.458 12.6387 21.326 12.3263 21.062 12.063C20.7987 11.799 20.4723 11.667 20.083 11.667C19.6943 11.667 19.368 11.799 19.104 12.063C18.84 12.3263 18.708 12.6527 18.708 13.042V18.708H13C12.6387 18.708 12.326 18.847 12.062 19.125C11.7987 19.403 11.667 19.7363 11.667 20.125C11.667 20.5137 11.7987 20.84 12.062 21.104C12.326 21.368 12.6527 21.5 13.042 21.5H18.708V27C18.708 27.3613 18.84 27.674 19.104 27.938C19.368 28.2013 19.6943 28.333 20.083 28.333ZM20 36.667C17.6667 36.667 15.486 36.2363 13.458 35.375C11.4307 34.5137 9.66701 33.333 8.16701 31.833C6.66701 30.333 5.48634 28.5693 4.62501 26.542C3.76367 24.514 3.33301 22.3333 3.33301 20C3.33301 17.6667 3.76367 15.486 4.62501 13.458C5.48634 11.4307 6.66701 9.66699 8.16701 8.16699C9.66701 6.66699 11.4307 5.48633 13.458 4.62499C15.486 3.76366 17.6667 3.33299 20 3.33299C22.3333 3.33299 24.514 3.76366 26.542 4.62499C28.5693 5.48633 30.333 6.66699 31.833 8.16699C33.333 9.66699 34.5137 11.4307 35.375 13.458C36.2363 15.486 36.667 17.6667 36.667 20C36.667 22.3333 36.2363 24.514 35.375 26.542C34.5137 28.5693 33.333 30.333 31.833 31.833C30.333 33.333 28.5693 34.5137 26.542 35.375C24.514 36.2363 22.3333 36.667 20 36.667ZM20 33.875C23.8333 33.875 27.104 32.5207 29.812 29.812C32.5207 27.104 33.875 23.8333 33.875 20C33.875 16.1667 32.5207 12.896 29.812 10.188C27.104 7.47933 23.8333 6.12499 20 6.12499C16.1667 6.12499 12.896 7.47933 10.188 10.188C7.47934 12.896 6.12501 16.1667 6.12501 20C6.12501 23.8333 7.47934 27.104 10.188 29.812C12.896 32.5207 16.1667 33.875 20 33.875Z" />
+                    </g>
+                  </svg>
+                </span>
+                <span>Create Post</span>
+              </Link>
+            </li>
+            {status === "authenticated" ? (
+              <li ref={popupRef}>
+                <div
+                  className="lg:w-[80px] lg:h-[80px] w-[60px]"
+                  onClick={() => setIsPopupVisible(!isPopupVisible)}
                 >
-                  <mask
-                    id="mask0_2_120"
-                    style={{ maskType: "alpha" }}
-                    maskUnits="userSpaceOnUse"
-                    x={0}
-                    y={0}
-                    width={40}
-                    height={40}
-                  >
-                    <rect width={40} height={40}/>
-                  </mask>
-                  <g mask="url(#mask0_2_120)">
-                    <path d="M20.083 28.333C20.4723 28.333 20.7987 28.2013 21.062 27.938C21.326 27.674 21.458 27.3473 21.458 26.958V21.5H27C27.3613 21.5 27.674 21.368 27.938 21.104C28.2013 20.84 28.333 20.5137 28.333 20.125C28.333 19.7083 28.2013 19.368 27.938 19.104C27.674 18.84 27.3473 18.708 26.958 18.708H21.458V13C21.458 12.6387 21.326 12.3263 21.062 12.063C20.7987 11.799 20.4723 11.667 20.083 11.667C19.6943 11.667 19.368 11.799 19.104 12.063C18.84 12.3263 18.708 12.6527 18.708 13.042V18.708H13C12.6387 18.708 12.326 18.847 12.062 19.125C11.7987 19.403 11.667 19.7363 11.667 20.125C11.667 20.5137 11.7987 20.84 12.062 21.104C12.326 21.368 12.6527 21.5 13.042 21.5H18.708V27C18.708 27.3613 18.84 27.674 19.104 27.938C19.368 28.2013 19.6943 28.333 20.083 28.333ZM20 36.667C17.6667 36.667 15.486 36.2363 13.458 35.375C11.4307 34.5137 9.66701 33.333 8.16701 31.833C6.66701 30.333 5.48634 28.5693 4.62501 26.542C3.76367 24.514 3.33301 22.3333 3.33301 20C3.33301 17.6667 3.76367 15.486 4.62501 13.458C5.48634 11.4307 6.66701 9.66699 8.16701 8.16699C9.66701 6.66699 11.4307 5.48633 13.458 4.62499C15.486 3.76366 17.6667 3.33299 20 3.33299C22.3333 3.33299 24.514 3.76366 26.542 4.62499C28.5693 5.48633 30.333 6.66699 31.833 8.16699C33.333 9.66699 34.5137 11.4307 35.375 13.458C36.2363 15.486 36.667 17.6667 36.667 20C36.667 22.3333 36.2363 24.514 35.375 26.542C34.5137 28.5693 33.333 30.333 31.833 31.833C30.333 33.333 28.5693 34.5137 26.542 35.375C24.514 36.2363 22.3333 36.667 20 36.667ZM20 33.875C23.8333 33.875 27.104 32.5207 29.812 29.812C32.5207 27.104 33.875 23.8333 33.875 20C33.875 16.1667 32.5207 12.896 29.812 10.188C27.104 7.47933 23.8333 6.12499 20 6.12499C16.1667 6.12499 12.896 7.47933 10.188 10.188C7.47934 12.896 6.12501 16.1667 6.12501 20C6.12501 23.8333 7.47934 27.104 10.188 29.812C12.896 32.5207 16.1667 33.875 20 33.875Z" />
-                  </g>
-                </svg>
-                </li>
-                <li>
-                  <span className="font-bold text-themeColor text-xl">
-                    {data?.user?.name}
-                  </span>
-                </li>
-                <li>
-                  <span className="text-themeColor">{data?.user?.email}</span>
-                </li>
-                <li>
-                  <Link
-                    href={"/dashboard"}
-                    className="text-themeColor underline"
-                  >
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={"/create-post"}
-                    className="text-themeColor underline"
-                  >
-                    Create post
-                  </Link>
-                </li>
-                <li
-                  onClick={() => signOut()}
-                  className="cursor-pointer flex justify-center items-center bg-themeGray rounded-full py-1"
+                  <Image
+                    src={data?.user?.image || ""}
+                    width={100}
+                    height={100}
+                    alt="Profile image"
+                    className="rounded-full cursor-pointer object-cover"
+                  />
+                </div>
+                <ul
+                  className={`dropdown absolute lg:bottom-0 bottom-[100px] w-[200px overflow-hidden] bg-dark space-y-3 p-3 rounded-lg lg:ml-[100px] ${
+                    !isPopupVisible && "hidden"
+                  }`}
                 >
+                  <li
+                    onClick={() => setIsPopupVisible(!isPopupVisible)}
+                    className="cursor-pointer"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={40}
+                      height={40}
+                      viewBox="0 0 40 40"
+                      fill="none"
+                      className="fill-red-500 rotate-45 m-auto"
+                    >
+                      <mask
+                        id="mask0_2_120"
+                        style={{ maskType: "alpha" }}
+                        maskUnits="userSpaceOnUse"
+                        x={0}
+                        y={0}
+                        width={40}
+                        height={40}
+                      >
+                        <rect width={40} height={40} />
+                      </mask>
+                      <g mask="url(#mask0_2_120)">
+                        <path d="M20.083 28.333C20.4723 28.333 20.7987 28.2013 21.062 27.938C21.326 27.674 21.458 27.3473 21.458 26.958V21.5H27C27.3613 21.5 27.674 21.368 27.938 21.104C28.2013 20.84 28.333 20.5137 28.333 20.125C28.333 19.7083 28.2013 19.368 27.938 19.104C27.674 18.84 27.3473 18.708 26.958 18.708H21.458V13C21.458 12.6387 21.326 12.3263 21.062 12.063C20.7987 11.799 20.4723 11.667 20.083 11.667C19.6943 11.667 19.368 11.799 19.104 12.063C18.84 12.3263 18.708 12.6527 18.708 13.042V18.708H13C12.6387 18.708 12.326 18.847 12.062 19.125C11.7987 19.403 11.667 19.7363 11.667 20.125C11.667 20.5137 11.7987 20.84 12.062 21.104C12.326 21.368 12.6527 21.5 13.042 21.5H18.708V27C18.708 27.3613 18.84 27.674 19.104 27.938C19.368 28.2013 19.6943 28.333 20.083 28.333ZM20 36.667C17.6667 36.667 15.486 36.2363 13.458 35.375C11.4307 34.5137 9.66701 33.333 8.16701 31.833C6.66701 30.333 5.48634 28.5693 4.62501 26.542C3.76367 24.514 3.33301 22.3333 3.33301 20C3.33301 17.6667 3.76367 15.486 4.62501 13.458C5.48634 11.4307 6.66701 9.66699 8.16701 8.16699C9.66701 6.66699 11.4307 5.48633 13.458 4.62499C15.486 3.76366 17.6667 3.33299 20 3.33299C22.3333 3.33299 24.514 3.76366 26.542 4.62499C28.5693 5.48633 30.333 6.66699 31.833 8.16699C33.333 9.66699 34.5137 11.4307 35.375 13.458C36.2363 15.486 36.667 17.6667 36.667 20C36.667 22.3333 36.2363 24.514 35.375 26.542C34.5137 28.5693 33.333 30.333 31.833 31.833C30.333 33.333 28.5693 34.5137 26.542 35.375C24.514 36.2363 22.3333 36.667 20 36.667ZM20 33.875C23.8333 33.875 27.104 32.5207 29.812 29.812C32.5207 27.104 33.875 23.8333 33.875 20C33.875 16.1667 32.5207 12.896 29.812 10.188C27.104 7.47933 23.8333 6.12499 20 6.12499C16.1667 6.12499 12.896 7.47933 10.188 10.188C7.47934 12.896 6.12501 16.1667 6.12501 20C6.12501 23.8333 7.47934 27.104 10.188 29.812C12.896 32.5207 16.1667 33.875 20 33.875Z" />
+                      </g>
+                    </svg>
+                  </li>
+                  <li>
+                    <span className="font-bold text-themeColor text-xl">
+                      {data?.user?.name}
+                    </span>
+                  </li>
+                  <li>
+                    <span className="text-themeColor">{data?.user?.email}</span>
+                  </li>
+                  <li>
+                    <Link
+                      href={"/dashboard"}
+                      className="text-themeColor underline"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={"/create-post"}
+                      className="text-themeColor underline"
+                    >
+                      Create post
+                    </Link>
+                  </li>
+                  <li
+                    onClick={() => signOut()}
+                    className="cursor-pointer flex justify-center items-center bg-themeGray rounded-full py-1"
+                  >
+                    <span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-[20px] login-svg m-auto"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                        />
+                      </svg>
+                    </span>
+                    <span className="text-themeColor">Sign Out</span>
+                  </li>
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <Link href="/sign-in">
                   <span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -216,40 +310,18 @@ const Navbar = () => {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
                       />
                     </svg>
                   </span>
-                  <span className="text-themeColor">Sign Out</span>
-                </li>
-              </ul>
-            </li>
-          ) : (
-            <li>
-              <Link href="/sign-in">
-                <span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-[20px] login-svg m-auto"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-                    />
-                  </svg>
-                </span>
-                <span className="text-themeColor">Sign In</span>
-              </Link>
-            </li>
-          )}
-        </ul>
-      </nav>
-    </div>
+                  <span className="text-themeColor">Sign In</span>
+                </Link>
+              </li>
+            )}
+          </ul>
+        </nav>
+      </div>
+    </>
   );
 };
 
