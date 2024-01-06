@@ -51,7 +51,10 @@ const Navbar = () => {
         <div className=" searchModel bg-trasnparent h-screen w-screen fixed top-0 z-50 grid place-items-center">
           <div className="bg-slate-900 text-white h-[500px] w-[400px] p-5 rounded-md relative">
             <span
-              onClick={() => setSearchModel(!searchModel)}
+              onClick={() => {
+                setSearchModel(!searchModel);
+                setSearchData([]);
+              }}
               className="text-red-500 text-4xl absolute rotate-45 top-[5px] left-[12px] cursor-pointer"
             >
               +
@@ -89,6 +92,7 @@ const Navbar = () => {
                       </Link>
                     </li>
                   ))}
+                {searchData.length === 0 && <li className="text-center">Type on serach Box!...</li>}
               </ul>
             </div>
           </div>
