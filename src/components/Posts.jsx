@@ -193,9 +193,11 @@ const Posts = async ({
               <div className="flex flex-wrap gap-3 text-textColor mt-4 justify-between pr-3 lg:pr-0">
                 {category && (
                   <div className="space-x-3">
+                    <Link href={`/categories/${category}`}>
                     <button className="border-2 border-themeColor rounded-md py-2 px-3">
                       {category}
                     </button>
+                    </Link>
                   </div>
                 )}
                 <div className="flex gap-3 flex-wrap">

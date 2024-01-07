@@ -36,7 +36,7 @@ const CategoryPosts = async ({ params }) => {
               content={post.content}
               author={post.authorEmail}
               datapublished={post.createdAt}
-              category={post.catName}
+              // category={post.catName}
               links={post.links || []}
               thumbnail={post.imageUrl}
             />
